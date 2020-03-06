@@ -1,4 +1,6 @@
-# Parker.js — Make things sticky
+# Parker.js
+
+## Make things sticky
 
 Hey web slingers! Parker.js is a small script for making elements sticky.
 
