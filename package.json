@@ -4,6 +4,5 @@
   "description": "A js module for making elements 'sticky'",
   "main": "parker.js",
   "author": "Bryan Stedman <bryanbstedman@gmail.com>",
-  "license": "MIT",
-  "private": true
+  "license": "MIT"
 }
