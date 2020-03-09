@@ -44,6 +44,9 @@ It doesn't typically make sense to make elements sticky at narrow breakpoints. B
 **bottomMargin**
 By default parker.js does not add any margin between the sticky element and the parent. A pixel value can be set here to provide some buffer between the bottom of the sticky element and the bottom of the parent element.
 
+**widthReferenceSelector**
+By default parker.js keep the sticky element as wide as it is on the initial page load. For responsive or variable width elements, this can cause some weirdness if and when the browser is resized. To solve this issue, parker.js can take a selector of a different element on the page and use its width for the sticky element's width as the window size changes.
+
 ### Examples:
 ```
 parker.init('.parker', {
