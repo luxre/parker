@@ -5,7 +5,8 @@ var parker = (function() {
   var defaultOptions = {
     breakpointStart: 768,
     bottomMargin: 0,
-    parent: false
+    parent: false,
+    widthReferenceSelector: false
   };
   var parkerObject = {}
   var parkerIsSticky = false;
@@ -43,6 +44,14 @@ var parker = (function() {
   // Make sure we are above the min-wdth breakpoint
   function checkBrowserWidth() {
     if (window.matchMedia('(min-width: ' + options.breakpointStart + 'px)').matches) {
+      if (options.widthReferenceSelector) {
+        var widthReferenceEl = document.querySelector(options.widthReferenceSelector);
+        var padding = window.getComputedStyle(widthReferenceEl).getPropertyValue('padding').split(' ');
+        var paddingValue = Number(padding[1].replace('px', '')) + Number(padding[3].replace('px', ''));
+        var referenceWidth = Math.round(widthReferenceEl.getBoundingClientRect().width - paddingValue);
+        element.style.width = referenceWidth + 'px';
+        makeSticky();
+      }
       if (!parkerIsSticky) {
         watchScroll();
       }
