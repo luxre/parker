@@ -52,9 +52,7 @@ var parker = (function() {
         element.style.width = referenceWidth + 'px';
         makeSticky();
       }
-      if (!parkerIsSticky) {
-        watchScroll();
-      }
+      watchScroll();
     } else {
       window.removeEventListener('scroll', makeSticky);
       unstick(element, true);
@@ -68,7 +66,6 @@ var parker = (function() {
 
   // Make the selected element sticky
   function makeSticky(e) {
-
     parentProperties = parent ? parent.getBoundingClientRect() : element.parentElement.getBoundingClientRect();
     floor = parentProperties.bottom;
     elementProperties = element.getBoundingClientRect();
@@ -98,7 +95,6 @@ var parker = (function() {
           element.style.width = Math.round(elementProperties.width) + 'px';
           element.style.bottom = options.bottomMargin + 'px';
           element.style.position = 'fixed';
-          element.style.height = elementProperties.height + 'px';
         }
 
         if (parentOffset <= 0) {
@@ -128,7 +124,6 @@ var parker = (function() {
         } else {
           element.style.bottom = options.bottomMargin + 'px';
           element.style.position = 'fixed';
-          element.style.height = elementProperties.height + 'px';
           if (floor) {
             element.style.bottom = wh - floor + options.bottomMargin + 'px';
           }
