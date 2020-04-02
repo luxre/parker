@@ -32,11 +32,17 @@ var parker = (function() {
       // Look for specified parent element if present
       parent = options.parentSelector ? document.querySelector(options.parentSelector) : false;
 
-      checkBrowserWidth();
+      var elHeight = element.offsetHeight;
+      var parHeight = parent ? parent.offsetHeight : element.parentElement.offsetHeight;
 
-      window.addEventListener('resize', function() {
+      if (parHeight > elHeight) {
         checkBrowserWidth();
-      });
+
+        window.addEventListener('resize', function() {
+          checkBrowserWidth();
+        });
+      }
+
     }
 
   };
