@@ -38,14 +38,18 @@ var parker = (function() {
       if (parHeight > elHeight) {
         checkBrowserWidth();
 
-        window.addEventListener('resize', function() {
-          checkBrowserWidth();
-        });
+        window.addEventListener('resize', checkBrowserWidth);
       }
 
     }
 
   };
+
+  parkerObject.tidyUp = function() {
+    unstick();
+    window.removeEventListener('resize', checkBrowserWidth);
+    window.removeEventListener('scroll', makeSticky);
+  }
 
   // Make sure we are above the min-wdth breakpoint
   function checkBrowserWidth() {
@@ -139,7 +143,7 @@ var parker = (function() {
     }
   };
 
-  //
+  // Unstick sticky element
   function unstick(full = false) {
     element.style.position = '';
     element.style.top = '';
