@@ -1,5 +1,6 @@
 var parker = (function() {
 
+
   // Set initial vars
   var wh = window.innerHeight;
   var defaultOptions = {
@@ -91,9 +92,42 @@ var parker = (function() {
     }
     lastScrollTop = scrollPosition;
 
-    // Make it sticky
-    if (scrollingDown) {
+    var elementIsShorterThanWindow = elementProperties.height < wh - elementProperties.top ? true : false;
 
+    // Make it sticky
+    if (elementIsShorterThanWindow) {
+
+      // scrolling down
+      if (scrollingDown) {
+        if (elementProperties.bottom + 10 >= parentProperties.bottom && elementProperties.top > 0) {
+
+          element.style.position = 'absolute';
+          element.style.top = 'auto';
+          element.style.bottom = options.bottomMargin + 'px';
+          parkerIsSticky = true
+        } else if (parentProperties.top <= 0) {
+          element.style.position = 'sticky';
+          element.style.width = Math.round(elementProperties.width) + 'px';
+          element.style.top = elementProperties.y + 'px';
+          parkerIsSticky = true
+        }
+
+      } else {
+        if (elementProperties.bottom + 50 > parentProperties.bottom && elementProperties.top < 0) {
+          element.style.position = 'absolute';
+          element.style.top = 'auto';
+          element.style.bottom = options.bottomMargin + 'px';
+          parkerIsSticky = true
+        } else if (elementProperties.bottom >= wh) {
+          element.style.position = 'fixed';
+          element.style.width = Math.round(elementProperties.width) + 'px';
+          element.style.bottom = options.bottomMargin + 'px';
+          parkerIsSticky = true
+        } else {
+        }
+      }
+
+    } else if (scrollingDown) {
       // Scrolling down
       if (parkerIsSticky && scrollPosition <= 0) {
         unstick(element);
@@ -121,7 +155,6 @@ var parker = (function() {
       } else if (parentProperties.bottom >= wh) {
       }
     } else {
-
       // Scrolling Up
       if(floor > wh && parkerIsSticky && element.style.position == 'absolute') {
         element.style.position = 'fixed';
