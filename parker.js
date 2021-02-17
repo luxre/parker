@@ -1,11 +1,13 @@
 var parker = (function() {
 
+
   // Set initial vars
   var wh = window.innerHeight;
   var defaultOptions = {
     breakpointStart: 768,
     bottomMargin: 0,
-    parent: false
+    parent: false,
+    widthReferenceSelector: false
   };
   var parkerObject = {}
   var parkerIsSticky = false;
@@ -31,21 +33,37 @@ var parker = (function() {
       // Look for specified parent element if present
       parent = options.parentSelector ? document.querySelector(options.parentSelector) : false;
 
-      checkBrowserWidth();
+      var elHeight = element.offsetHeight;
+      var parHeight = parent ? parent.offsetHeight : element.parentElement.offsetHeight;
 
-      window.addEventListener('resize', function() {
+      if (parHeight > elHeight) {
         checkBrowserWidth();
-      });
+
+        window.addEventListener('resize', checkBrowserWidth);
+      }
+
     }
 
   };
 
+  parkerObject.tidyUp = function() {
+    unstick();
+    window.removeEventListener('resize', checkBrowserWidth);
+    window.removeEventListener('scroll', makeSticky);
+  }
+
   // Make sure we are above the min-wdth breakpoint
   function checkBrowserWidth() {
     if (window.matchMedia('(min-width: ' + options.breakpointStart + 'px)').matches) {
-      if (!parkerIsSticky) {
-        watchScroll();
+      if (options.widthReferenceSelector) {
+        var widthReferenceEl = document.querySelector(options.widthReferenceSelector);
+        var padding = window.getComputedStyle(widthReferenceEl).getPropertyValue('padding').split(' ');
+        var paddingValue = Number(padding[1].replace('px', '')) + Number(padding[3].replace('px', ''));
+        var referenceWidth = Math.round(widthReferenceEl.getBoundingClientRect().width - paddingValue);
+        element.style.width = referenceWidth + 'px';
+        makeSticky();
       }
+      watchScroll();
     } else {
       window.removeEventListener('scroll', makeSticky);
       unstick(element, true);
@@ -59,7 +77,6 @@ var parker = (function() {
 
   // Make the selected element sticky
   function makeSticky(e) {
-
     parentProperties = parent ? parent.getBoundingClientRect() : element.parentElement.getBoundingClientRect();
     floor = parentProperties.bottom;
     elementProperties = element.getBoundingClientRect();
@@ -75,9 +92,42 @@ var parker = (function() {
     }
     lastScrollTop = scrollPosition;
 
-    // Make it sticky
-    if (scrollingDown) {
+    var elementIsShorterThanWindow = elementProperties.height < wh - elementProperties.top ? true : false;
 
+    // Make it sticky
+    if (elementIsShorterThanWindow) {
+
+      // scrolling down
+      if (scrollingDown) {
+        if (elementProperties.bottom + 10 >= parentProperties.bottom && elementProperties.top > 0) {
+
+          element.style.position = 'absolute';
+          element.style.top = 'auto';
+          element.style.bottom = options.bottomMargin + 'px';
+          parkerIsSticky = true
+        } else if (parentProperties.top <= 0) {
+          element.style.position = 'sticky';
+          element.style.width = Math.round(elementProperties.width) + 'px';
+          element.style.top = elementProperties.y + 'px';
+          parkerIsSticky = true
+        }
+
+      } else {
+        if (elementProperties.bottom + 50 > parentProperties.bottom && elementProperties.top < 0) {
+          element.style.position = 'absolute';
+          element.style.top = 'auto';
+          element.style.bottom = options.bottomMargin + 'px';
+          parkerIsSticky = true
+        } else if (elementProperties.bottom >= wh) {
+          element.style.position = 'fixed';
+          element.style.width = Math.round(elementProperties.width) + 'px';
+          element.style.bottom = options.bottomMargin + 'px';
+          parkerIsSticky = true
+        } else {
+        }
+      }
+
+    } else if (scrollingDown) {
       // Scrolling down
       if (parkerIsSticky && scrollPosition <= 0) {
         unstick(element);
@@ -89,7 +139,6 @@ var parker = (function() {
           element.style.width = Math.round(elementProperties.width) + 'px';
           element.style.bottom = options.bottomMargin + 'px';
           element.style.position = 'fixed';
-          element.style.height = elementProperties.height + 'px';
         }
 
         if (parentOffset <= 0) {
@@ -106,7 +155,6 @@ var parker = (function() {
       } else if (parentProperties.bottom >= wh) {
       }
     } else {
-
       // Scrolling Up
       if(floor > wh && parkerIsSticky && element.style.position == 'absolute') {
         element.style.position = 'fixed';
@@ -119,7 +167,6 @@ var parker = (function() {
         } else {
           element.style.bottom = options.bottomMargin + 'px';
           element.style.position = 'fixed';
-          element.style.height = elementProperties.height + 'px';
           if (floor) {
             element.style.bottom = wh - floor + options.bottomMargin + 'px';
           }
@@ -129,7 +176,7 @@ var parker = (function() {
     }
   };
 
-  //
+  // Unstick sticky element
   function unstick(full = false) {
     element.style.position = '';
     element.style.top = '';
