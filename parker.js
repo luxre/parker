@@ -123,7 +123,11 @@ var parker = (function() {
           element.style.width = Math.round(elementProperties.width) + 'px';
           element.style.bottom = options.bottomMargin + 'px';
           parkerIsSticky = true
-        } else {
+        } else if (parentProperties.top <= 0) {
+          element.style.position = 'sticky';
+          element.style.width = Math.round(elementProperties.width) + 'px';
+          element.style.top = elementProperties.y + 'px';
+          parkerIsSticky = true
         }
       }
 
