@@ -97,6 +97,8 @@ var parker = (function() {
     // Make it sticky
     if (elementIsShorterThanWindow) {
 
+      element.classList.add('shorter');
+
       // scrolling down
       if (scrollingDown) {
         if (elementProperties.bottom + 10 >= parentProperties.bottom && elementProperties.top > 0) {
