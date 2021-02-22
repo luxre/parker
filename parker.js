@@ -1,6 +1,5 @@
 var parker = (function() {
 
-
   // Set initial vars
   var wh = window.innerHeight;
   var defaultOptions = {
@@ -110,7 +109,7 @@ var parker = (function() {
         } else if (parentProperties.top <= 0) {
           element.style.position = 'sticky';
           element.style.width = Math.round(elementProperties.width) + 'px';
-          element.style.top = elementProperties.y + 'px';
+          element.style.top = 0;
           parkerIsSticky = true
         }
 
@@ -123,12 +122,13 @@ var parker = (function() {
         } else if (elementProperties.bottom >= wh) {
           element.style.position = 'fixed';
           element.style.width = Math.round(elementProperties.width) + 'px';
+          element.style.top = 'auto';
           element.style.bottom = options.bottomMargin + 'px';
           parkerIsSticky = true
         } else if (parentProperties.top <= 0) {
           element.style.position = 'sticky';
           element.style.width = Math.round(elementProperties.width) + 'px';
-          element.style.top = elementProperties.y + 'px';
+          element.style.top = 0;
           parkerIsSticky = true
         }
       }
@@ -141,8 +141,8 @@ var parker = (function() {
 
         if (!parkerIsSticky) {
           parkerIsSticky = true;
-
           element.style.width = Math.round(elementProperties.width) + 'px';
+          element.style.top = 'auto';
           element.style.bottom = options.bottomMargin + 'px';
           element.style.position = 'fixed';
         }
@@ -151,6 +151,7 @@ var parker = (function() {
           if (element.parentNode.style.position === 'relative') {
             element.style.position = 'absolute';
             element.style.bottom = options.bottomMargin + 'px';
+
           } else {
             if (floor) {
               var diff = wh - floor;
