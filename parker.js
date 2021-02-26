@@ -6,6 +6,7 @@ var parker = (function() {
     breakpointStart: 768,
     bottomMargin: 0,
     parent: false,
+    topOffset: 0,
     widthReferenceSelector: false
   };
   var parkerObject = {}
@@ -91,7 +92,7 @@ var parker = (function() {
     }
     lastScrollTop = scrollPosition;
 
-    var elementIsShorterThanWindow = elementProperties.height < wh - elementProperties.top ? true : false;
+    var elementIsShorterThanWindow = elementProperties.height + options.topOffset < wh ? true : false;
 
     // Make it sticky
     if (elementIsShorterThanWindow) {
