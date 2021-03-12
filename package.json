@@ -1,6 +1,6 @@
 {
   "name": "parker.js",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "A js module for making elements 'sticky'",
   "main": "parker.js",
   "author": "Bryan Stedman <bryanbstedman@gmail.com>",
