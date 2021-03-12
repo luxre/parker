@@ -121,11 +121,18 @@ var parker = (function() {
           element.style.bottom = options.bottomMargin + 'px';
           parkerIsSticky = true
         } else if (elementProperties.bottom >= wh) {
-          element.style.position = 'fixed';
-          element.style.width = Math.round(elementProperties.width) + 'px';
-          element.style.top = 'auto';
-          element.style.bottom = options.bottomMargin + 'px';
-          parkerIsSticky = true
+
+          if (parentTop >= elementProperties.top) {
+            element.style.position = 'relative';
+            element.style.top = 0;
+          } else {
+            element.style.position = 'fixed';
+            element.style.width = Math.round(elementProperties.width) + 'px';
+            element.style.top = 'auto';
+            element.style.bottom = options.bottomMargin + 'px';
+            parkerIsSticky = true
+          }
+
         } else if (parentProperties.top <= 0) {
           element.style.position = 'sticky';
           element.style.width = Math.round(elementProperties.width) + 'px';
