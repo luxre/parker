@@ -159,11 +159,9 @@ var parker = (function() {
           if (element.parentNode.style.position === 'relative') {
             element.style.position = 'absolute';
             element.style.bottom = options.bottomMargin + 'px';
-
           } else {
             if (floor) {
-              var diff = wh - floor;
-              element.style.bottom = diff + options.bottomMargin + 'px';
+              element.style.position = 'absolute';
             }
           }
         }
@@ -183,7 +181,7 @@ var parker = (function() {
           element.style.bottom = options.bottomMargin + 'px';
           element.style.position = 'fixed';
           if (floor) {
-            element.style.bottom = wh - floor + options.bottomMargin + 'px';
+            element.style.position = 'absolute';
           }
         }
 
