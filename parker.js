@@ -81,6 +81,7 @@ var parker = (function() {
     floor = parentProperties.bottom;
     elementProperties = element.getBoundingClientRect();
     var parentTop = parentProperties.top;
+    wh = window.innerHeight;
     var parentOffset = parentProperties.height - wh + parentProperties.y;
 
     // Check scroll direction
